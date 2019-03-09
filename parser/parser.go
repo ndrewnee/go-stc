@@ -73,8 +73,9 @@ func walk(tokens []tokenizer.Token, current int) (Node, int, error) {
 				return Node{}, 0, err
 			}
 
-			current = innerCurrent
 			node.Params = append(node.Params, param)
+			current = innerCurrent
+			token = tokens[current]
 		}
 
 		current++
