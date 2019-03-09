@@ -65,8 +65,8 @@ func walk(tokens []tokenizer.Token, current int) (Node, int, error) {
 		current++
 		token = tokens[current]
 
-		for token.Type != tokenizer.TypeParen ||
-			token.Type == tokenizer.TypeParen && token.Value == ")" {
+		for (token.Type != tokenizer.TypeParen) ||
+			(token.Type == tokenizer.TypeParen && token.Value != ")") {
 
 			param, innerCurrent, err := walk(tokens, current)
 			if err != nil {
@@ -80,6 +80,6 @@ func walk(tokens []tokenizer.Token, current int) (Node, int, error) {
 		current++
 		return node, current, nil
 	default:
-		return Node{}, 0, fmt.Errorf("parse failed. unknown token type: %v", token.Type)
+		return Node{}, 0, fmt.Errorf("parse failed. unknown token type: %+v, current: %v", token, current)
 	}
 }

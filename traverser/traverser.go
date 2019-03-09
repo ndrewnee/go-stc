@@ -44,7 +44,7 @@ func traverseNode(node parser.Node, parent parser.Node, visitor Visitor) error {
 		}
 	case parser.NodeTypeNumberLiteral, parser.NodeTypeStringLiteral:
 	default:
-		return fmt.Errorf("traverse failed. unknown node type: %v", node.Type)
+		return fmt.Errorf("traverse failed. unknown node type: %+v", node)
 	}
 
 	if ok && methods.Exit != nil {

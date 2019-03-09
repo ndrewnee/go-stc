@@ -58,9 +58,9 @@ func Tokenize(input string) ([]Token, error) {
 
 			current++
 			tokens = append(tokens, Token{TypeString, value})
-		case unicode.IsSymbol(char):
+		case unicode.IsLetter(char):
 			value := ""
-			for unicode.IsSymbol(char) {
+			for unicode.IsLetter(char) {
 				value += string(char)
 				current++
 				char = inputRunes[current]
@@ -68,7 +68,7 @@ func Tokenize(input string) ([]Token, error) {
 
 			tokens = append(tokens, Token{TypeName, value})
 		default:
-			return nil, fmt.Errorf("tokenize failed. unknown character: %v", char)
+			return nil, fmt.Errorf("tokenize failed. unknown character: %v, current: %v", string(char), current)
 		}
 	}
 
