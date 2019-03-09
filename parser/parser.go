@@ -74,6 +74,6 @@ func walk(tokens []tokenizer.Token, current int) (Node, int, error) {
 		current++
 		return node, current, nil
 	default:
-		return Node{}, 0, fmt.Errorf("unknown token type: %v", token.Type)
+		return Node{}, 0, fmt.Errorf("parse failed. unknown token type: %v", token.Type)
 	}
 }

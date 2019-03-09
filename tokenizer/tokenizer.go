@@ -68,7 +68,7 @@ func Tokenize(input string) ([]Token, error) {
 
 			tokens = append(tokens, Token{TypeName, value})
 		default:
-			return nil, fmt.Errorf("unknown character: %v", char)
+			return nil, fmt.Errorf("tokenize failed. unknown character: %v", char)
 		}
 	}
 
