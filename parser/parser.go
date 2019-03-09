@@ -7,20 +7,26 @@ import (
 )
 
 const (
-	NodeTypeProgram        NodeType = "Program"
-	NodeTypeNumberLiteral  NodeType = "NumberLiteral"
-	NodeTypeStringLiteral  NodeType = "StringLiteral"
-	NodeTypeCallExpression NodeType = "CallExpression"
+	NodeTypeProgram             NodeType = "Program"
+	NodeTypeNumberLiteral       NodeType = "NumberLiteral"
+	NodeTypeStringLiteral       NodeType = "StringLiteral"
+	NodeTypeCallExpression      NodeType = "CallExpression"
+	NodeTypeIdentifier          NodeType = "Identifier"
+	NodeTypeExpressionStatement NodeType = "ExpressionStatement"
 )
 
 type NodeType string
 
 type Node struct {
-	Type   NodeType
-	Value  string
-	Name   string
-	Body   []Node
-	Params []Node
+	Type       NodeType
+	Value      string
+	Name       string
+	Body       []Node
+	Params     []Node
+	Context    *[]Node
+	Callee     *Node
+	Arguments  *[]Node
+	Expression *Node
 }
 
 func Parse(tokens []tokenizer.Token) (Node, error) {
