@@ -21,7 +21,6 @@ func TestTransform(t *testing.T) {
 	}{
 		{
 			name:    "should fail because node type is unknown",
-			skip:    true,
 			wantErr: assert.Error,
 		},
 		{

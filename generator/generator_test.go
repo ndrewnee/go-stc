@@ -18,6 +18,10 @@ func TestGenerateCode(t *testing.T) {
 		wantErr assert.ErrorAssertionFunc
 	}{
 		{
+			name:    "should fail because node type is invalid",
+			wantErr: assert.Error,
+		},
+		{
 			name: "should generate correct code",
 			args: args{
 				ast: parser.Node{
