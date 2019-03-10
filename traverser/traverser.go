@@ -14,6 +14,10 @@ type VisitorMethods struct {
 type Visitor map[parser.NodeType]VisitorMethods
 
 func Traverse(ast parser.Node, visitor Visitor) error {
+	if visitor == nil {
+		visitor = make(Visitor)
+	}
+
 	return traverseNode(ast, parser.Node{}, visitor)
 }
 

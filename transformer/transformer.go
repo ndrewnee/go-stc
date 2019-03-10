@@ -31,7 +31,7 @@ func Transform(ast parser.Node) (parser.Node, error) {
 			Enter: func(node *parser.Node, parent parser.Node) {
 				expression := parser.Node{
 					Type:      parser.NodeTypeCallExpression,
-					Arguments: &[]parser.Node{},
+					Arguments: new([]parser.Node),
 					Callee: &parser.Node{
 						Type: parser.NodeTypeIdentifier,
 						Name: node.Name,
@@ -41,10 +41,13 @@ func Transform(ast parser.Node) (parser.Node, error) {
 				node.Context = expression.Arguments
 
 				if parent.Type != parser.NodeTypeCallExpression {
-					expression = parser.Node{
+					newExpression := parser.Node{
 						Type:       parser.NodeTypeExpressionStatement,
 						Expression: &expression,
 					}
+
+					*parent.Context = append(*parent.Context, newExpression)
+					return
 				}
 
 				*parent.Context = append(*parent.Context, expression)
