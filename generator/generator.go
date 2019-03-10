@@ -7,11 +7,11 @@ import (
 	"github.com/ndrewnee/go-stc/parser"
 )
 
-func GenerateCode(node parser.Node) (string, error) {
-	switch node.Type {
+func GenerateCode(ast parser.Node) (string, error) {
+	switch ast.Type {
 	case parser.NodeTypeProgram:
-		result := make([]string, 0, len(node.Body))
-		for _, child := range node.Body {
+		result := make([]string, 0, len(ast.Body))
+		for _, child := range ast.Body {
 			code, err := GenerateCode(child)
 			if err != nil {
 				return "", err
@@ -22,20 +22,20 @@ func GenerateCode(node parser.Node) (string, error) {
 
 		return strings.Join(result, "\n"), nil
 	case parser.NodeTypeExpressionStatement:
-		code, err := GenerateCode(node)
+		code, err := GenerateCode(*ast.Expression)
 		if err != nil {
 			return "", err
 		}
 
 		return code + ";", nil
 	case parser.NodeTypeCallExpression:
-		callee, err := GenerateCode(*node.Callee)
+		callee, err := GenerateCode(*ast.Callee)
 		if err != nil {
 			return "", err
 		}
 
-		args := make([]string, 0, len(*node.Arguments))
-		for _, arg := range *node.Arguments {
+		args := make([]string, 0, len(*ast.Arguments))
+		for _, arg := range *ast.Arguments {
 			argCode, err := GenerateCode(arg)
 			if err != nil {
 				return "", err
@@ -46,12 +46,12 @@ func GenerateCode(node parser.Node) (string, error) {
 
 		return callee + "(" + strings.Join(args, ", ") + ")", nil
 	case parser.NodeTypeIdentifier:
-		return node.Name, nil
+		return ast.Name, nil
 	case parser.NodeTypeNumberLiteral:
-		return node.Value, nil
+		return ast.Value, nil
 	case parser.NodeTypeStringLiteral:
-		return `"` + node.Value + `"`, nil
+		return `"` + ast.Value + `"`, nil
 	default:
-		return "", fmt.Errorf("generate code failed. unknown node type: %+v", node)
+		return "", fmt.Errorf("generate code failed. unknown node type: %+v", ast)
 	}
 }
