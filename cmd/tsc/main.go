@@ -1,17 +1,24 @@
 package main
 
 import (
+	"fmt"
 	"log"
+	"os"
 
 	"github.com/ndrewnee/go-stc/compiler"
 )
 
 func main() {
-	program := "(add 10 (subtract 10 6))"
+	if len(os.Args) <= 1 {
+		fmt.Println(`Usage: tsc "program code". For example: tsc "(add 10 (subtract 10 6))".`)
+		os.Exit(0)
+	}
+
+	program := os.Args[1]
 	output, err := compiler.Compile(program)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	log.Println(output)
+	fmt.Println(output)
 }
