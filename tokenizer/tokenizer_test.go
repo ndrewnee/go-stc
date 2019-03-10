@@ -25,6 +25,34 @@ func TestTokenize(t *testing.T) {
 			wantErr: assert.Error,
 		},
 		{
+			name: "should fail because ended with word",
+			args: args{
+				input: "(test",
+			},
+			wantErr: assert.Error,
+		},
+		{
+			name: "should fail because ended with number",
+			args: args{
+				input: "(123",
+			},
+			wantErr: assert.Error,
+		},
+		{
+			name: "should fail because quote is not closed $1",
+			args: args{
+				input: `"`,
+			},
+			wantErr: assert.Error,
+		},
+		{
+			name: "should fail because quote is not closed #2",
+			args: args{
+				input: `(concat "foo" "bar)`,
+			},
+			wantErr: assert.Error,
+		},
+		{
 			name: "should correctly tokenize input",
 			args: args{
 				input: `(add 2 (subtract 4 2)) (concat "foo" "bar")`,

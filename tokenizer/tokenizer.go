@@ -43,7 +43,7 @@ func Tokenize(input string) ([]Token, error) {
 
 				index++
 				if index >= length {
-					return tokens, nil
+					return nil, fmt.Errorf("tokenize failed. ended with number: %v", value)
 				}
 
 				char = inputRunes[index]
@@ -55,7 +55,7 @@ func Tokenize(input string) ([]Token, error) {
 
 			index++
 			if index >= length {
-				return tokens, nil
+				return nil, fmt.Errorf("tokenize failed. quote not closed: %v", value)
 			}
 
 			char = inputRunes[index]
@@ -64,7 +64,7 @@ func Tokenize(input string) ([]Token, error) {
 
 				index++
 				if index >= length {
-					return tokens, nil
+					return nil, fmt.Errorf("tokenize failed. quote not closed: %v", value)
 				}
 
 				char = inputRunes[index]
@@ -79,7 +79,7 @@ func Tokenize(input string) ([]Token, error) {
 
 				index++
 				if index >= length {
-					return tokens, nil
+					return nil, fmt.Errorf("tokenize failed. ended with word: %v", value)
 				}
 
 				char = inputRunes[index]
