@@ -20,12 +20,12 @@ type Token struct {
 }
 
 func Tokenize(input string) ([]Token, error) {
-	inputRunes := []rune(input)
-
 	var tokens []Token
-	current := 0
 
-	for current < len(inputRunes) {
+	inputRunes := []rune(input)
+	length := len(inputRunes)
+
+	for current := 0; current < length; {
 		char := inputRunes[current]
 		switch {
 		case char == '(':
@@ -40,29 +40,48 @@ func Tokenize(input string) ([]Token, error) {
 			value := ""
 			for unicode.IsNumber(char) {
 				value += string(char)
+
 				current++
+				if current >= length {
+					return tokens, nil
+				}
+
 				char = inputRunes[current]
 			}
 
 			tokens = append(tokens, Token{TypeNumber, value})
 		case char == '"':
 			value := ""
-			current++
-			char = inputRunes[current]
 
+			current++
+			if current >= length {
+				return tokens, nil
+			}
+
+			char = inputRunes[current]
 			for char != '"' {
 				value += string(char)
+
 				current++
+				if current >= length {
+					return tokens, nil
+				}
+
 				char = inputRunes[current]
 			}
 
-			current++
 			tokens = append(tokens, Token{TypeString, value})
+			current++
 		case unicode.IsLetter(char):
 			value := ""
 			for unicode.IsLetter(char) {
 				value += string(char)
+
 				current++
+				if current >= length {
+					return tokens, nil
+				}
+
 				char = inputRunes[current]
 			}
 
