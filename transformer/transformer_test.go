@@ -24,7 +24,7 @@ func TestTransform(t *testing.T) {
 			wantErr: assert.Error,
 		},
 		{
-			name: "should traverse through ast",
+			name: "should transform ast",
 			args: args{
 				ast: parser.Node{
 					Type:    parser.NodeTypeProgram,
@@ -51,6 +51,20 @@ func TestTransform(t *testing.T) {
 											Value: "2",
 										},
 									},
+								},
+							},
+						},
+						{
+							Type: parser.NodeTypeCallExpression,
+							Name: "concat",
+							Params: []parser.Node{
+								{
+									Type:  parser.NodeTypeStringLiteral,
+									Value: "foo",
+								},
+								{
+									Type:  parser.NodeTypeStringLiteral,
+									Value: "bar",
 								},
 							},
 						},
@@ -90,6 +104,26 @@ func TestTransform(t *testing.T) {
 											Value: "2",
 										},
 									},
+								},
+							},
+						},
+					},
+					{
+						Type: parser.NodeTypeExpressionStatement,
+						Expression: &parser.Node{
+							Type: parser.NodeTypeCallExpression,
+							Callee: &parser.Node{
+								Type: parser.NodeTypeIdentifier,
+								Name: "concat",
+							},
+							Arguments: &[]parser.Node{
+								{
+									Type:  parser.NodeTypeStringLiteral,
+									Value: "foo",
+								},
+								{
+									Type:  parser.NodeTypeStringLiteral,
+									Value: "bar",
 								},
 							},
 						},

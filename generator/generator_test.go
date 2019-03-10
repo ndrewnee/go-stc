@@ -60,11 +60,32 @@ func TestGenerateCode(t *testing.T) {
 								},
 							},
 						},
+						{
+							Type: parser.NodeTypeExpressionStatement,
+							Expression: &parser.Node{
+								Type: parser.NodeTypeCallExpression,
+								Callee: &parser.Node{
+									Type: parser.NodeTypeIdentifier,
+									Name: "concat",
+								},
+								Arguments: &[]parser.Node{
+									{
+										Type:  parser.NodeTypeStringLiteral,
+										Value: "foo",
+									},
+									{
+										Type:  parser.NodeTypeStringLiteral,
+										Value: "bar",
+									},
+								},
+							},
+						},
 					},
 				},
 			},
 			wantErr: assert.NoError,
-			want:    "add(2, subtract(4, 2));",
+			want: `add(2, subtract(4, 2));
+concat("foo", "bar");`,
 		},
 	}
 	for _, tt := range tests {
