@@ -25,69 +25,69 @@ func Tokenize(input string) ([]Token, error) {
 	inputRunes := []rune(input)
 	length := len(inputRunes)
 
-	for current := 0; current < length; {
-		char := inputRunes[current]
+	for index := 0; index < length; {
+		char := inputRunes[index]
 		switch {
 		case char == '(':
 			tokens = append(tokens, Token{TypeParen, "("})
-			current++
+			index++
 		case char == ')':
 			tokens = append(tokens, Token{TypeParen, ")"})
-			current++
+			index++
 		case unicode.IsSpace(char):
-			current++
+			index++
 		case unicode.IsNumber(char):
 			value := ""
 			for unicode.IsNumber(char) {
 				value += string(char)
 
-				current++
-				if current >= length {
+				index++
+				if index >= length {
 					return tokens, nil
 				}
 
-				char = inputRunes[current]
+				char = inputRunes[index]
 			}
 
 			tokens = append(tokens, Token{TypeNumber, value})
 		case char == '"':
 			value := ""
 
-			current++
-			if current >= length {
+			index++
+			if index >= length {
 				return tokens, nil
 			}
 
-			char = inputRunes[current]
+			char = inputRunes[index]
 			for char != '"' {
 				value += string(char)
 
-				current++
-				if current >= length {
+				index++
+				if index >= length {
 					return tokens, nil
 				}
 
-				char = inputRunes[current]
+				char = inputRunes[index]
 			}
 
 			tokens = append(tokens, Token{TypeString, value})
-			current++
+			index++
 		case unicode.IsLetter(char):
 			value := ""
 			for unicode.IsLetter(char) {
 				value += string(char)
 
-				current++
-				if current >= length {
+				index++
+				if index >= length {
 					return tokens, nil
 				}
 
-				char = inputRunes[current]
+				char = inputRunes[index]
 			}
 
 			tokens = append(tokens, Token{TypeName, value})
 		default:
-			return nil, fmt.Errorf("tokenize failed. unknown character: %v, current: %v", string(char), current)
+			return nil, fmt.Errorf("tokenize failed. unknown character: %v, index: %v", string(char), index)
 		}
 	}
 

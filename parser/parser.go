@@ -30,57 +30,57 @@ type Node struct {
 }
 
 func Parse(tokens []tokenizer.Token) (Node, error) {
-	current := 0
+	index := 0
 
 	ast := Node{Type: NodeTypeProgram}
 
-	for current < len(tokens) {
-		node, innerCurrent, err := walk(tokens, current)
+	for index < len(tokens) {
+		node, innerIndex, err := walk(tokens, index)
 		if err != nil {
 			return Node{}, err
 		}
 
-		current = innerCurrent
+		index = innerIndex
 		ast.Body = append(ast.Body, node)
 	}
 
 	return ast, nil
 }
 
-func walk(tokens []tokenizer.Token, current int) (Node, int, error) {
-	token := tokens[current]
+func walk(tokens []tokenizer.Token, index int) (Node, int, error) {
+	token := tokens[index]
 	switch {
 	case token.Type == tokenizer.TypeNumber:
-		current++
-		return Node{Type: NodeTypeNumberLiteral, Value: token.Value}, current, nil
+		index++
+		return Node{Type: NodeTypeNumberLiteral, Value: token.Value}, index, nil
 	case token.Type == tokenizer.TypeString:
-		current++
-		return Node{Type: NodeTypeStringLiteral, Value: token.Value}, current, nil
+		index++
+		return Node{Type: NodeTypeStringLiteral, Value: token.Value}, index, nil
 	case token.Type == tokenizer.TypeParen && token.Value == "(":
-		current++
-		token = tokens[current]
+		index++
+		token = tokens[index]
 
 		node := Node{Type: NodeTypeCallExpression, Name: token.Value}
 
-		current++
-		token = tokens[current]
+		index++
+		token = tokens[index]
 
 		for (token.Type != tokenizer.TypeParen) ||
 			(token.Type == tokenizer.TypeParen && token.Value != ")") {
 
-			param, innerCurrent, err := walk(tokens, current)
+			param, innerIndex, err := walk(tokens, index)
 			if err != nil {
 				return Node{}, 0, err
 			}
 
 			node.Params = append(node.Params, param)
-			current = innerCurrent
-			token = tokens[current]
+			index = innerIndex
+			token = tokens[index]
 		}
 
-		current++
-		return node, current, nil
+		index++
+		return node, index, nil
 	default:
-		return Node{}, 0, fmt.Errorf("parse failed. unknown token type: %+v, current: %v", token, current)
+		return Node{}, 0, fmt.Errorf("parse failed. unknown token type: %+v, index: %v", token, index)
 	}
 }
