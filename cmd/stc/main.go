@@ -10,7 +10,7 @@ import (
 
 func main() {
 	if len(os.Args) <= 1 {
-		fmt.Println(`Usage: tsc "program code". For example: tsc "(add 10 (subtract 10 6))".`)
+		fmt.Println(`Usage: stc "program code". For example: stc "(add 10 (subtract 10 6))".`)
 		os.Exit(0)
 	}
 
